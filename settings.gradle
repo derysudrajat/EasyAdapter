@@ -1,0 +1,2 @@
+include ':easyadapter'
+include ':example'
