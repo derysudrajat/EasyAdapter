@@ -1,6 +1,8 @@
 # EasyAdapter
 Library to create Recycle View without Adapter Class
 
+<img src="https://user-images.githubusercontent.com/32610660/142735095-78997cea-9103-4902-8618-0cc69de647a3.png" width = 40%>
+
 [![](https://jitpack.io/v/derysudrajat/EasyAdapter.svg)](https://jitpack.io/#derysudrajat/EasyAdapter)
 
 ## Setup
