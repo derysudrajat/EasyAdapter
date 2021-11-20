@@ -1,9 +1,31 @@
 # EasyAdapter
-Library to create Recycle View without Adapter Class
+Library to make your coding easy when create adapter
 
 <img src="https://user-images.githubusercontent.com/32610660/142735095-78997cea-9103-4902-8618-0cc69de647a3.png" width = 40%>
 
 [![](https://jitpack.io/v/derysudrajat/EasyAdapter.svg)](https://jitpack.io/#derysudrajat/EasyAdapter)
+
+<table style="width:100%">
+  <tr>
+    <th colspan=2 >EasyAdapter</th>
+  </tr>
+  <tr>
+    <td>ViewBinding Support</td>
+    <td>✅</td>
+  </tr>
+  <tr>
+    <td>100% Kotlin</td>
+    <td>✅</td>
+  </tr>
+  <tr>
+    <td>Create Adapter With or Without Class</td>
+    <td>✅</td>
+  </tr>
+  <tr>
+    <td>Easy to use</td>
+    <td>✅</td>
+  </tr>
+</table>
 
 ## Setup
 
@@ -68,13 +90,44 @@ class DataAdapter(
     }
 }
 ```
+### 3. Another way to Implement EasyAdapter
 
-### 3. Set adapter to RecycleView
+If you want to create adapter without class, yes we can, here we go 🔥
+
+```kotlin
+val dataAdapter = object : EasyAdapter<Data, ItemDataBinding>(Dummy.example){
+    override fun create(parent: ViewGroup): ItemDataBinding {
+        return ItemDataBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false
+        )
+    }
+
+    override fun onBind(binding: ItemDataBinding, data: Data) {
+        with(binding){
+            tvName.text = data.name
+            tvId.text = data.id
+        }
+    }
+}
+```
+### 4. Set adapter to RecycleView
+
+Adapter with class
 
 ```kotlin
 rvMain.apply {
     setHasFixedSize(true)
     itemAnimator = DefaultItemAnimator()
     adapter = DataAdapter(Dummy.example) // just call adapter like hot 🔥
+}
+```
+
+Adapter without calss
+
+```kotlin
+rvMain.apply {
+    setHasFixedSize(true)
+    itemAnimator = DefaultItemAnimator()
+    adapter = dataAdapter // just call adapter variable like hot 🔥
 }
 ```
