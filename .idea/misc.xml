@@ -8,8 +8,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="example/src/main/res/layout/activity_main.xml" value="0.3729166666666667" />
+        <entry key="../../../.gradle/caches/transforms-2/files-2.1/90697efd21cebcce838c9c7ace141a2b/appcompat-1.5.0/res/layout/support_simple_spinner_dropdown_item.xml" value="0.31614583333333335" />
+        <entry key="easyadapter/src/main/res/layout/item_text.xml" value="0.21666666666666667" />
+        <entry key="example/src/main/res/layout/activity_main.xml" value="0.292486572265625" />
+        <entry key="example/src/main/res/layout/activity_menu.xml" value="0.31614583333333335" />
+        <entry key="example/src/main/res/layout/activity_multiple_adapter.xml" value="0.15" />
+        <entry key="example/src/main/res/layout/fragment_main.xml" value="0.21666666666666667" />
         <entry key="example/src/main/res/layout/item_data.xml" value="0.3729166666666667" />
+        <entry key="example/src/main/res/layout/item_text.xml" value="0.21666666666666667" />
       </map>
     </option>
   </component>

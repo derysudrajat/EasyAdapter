@@ -1,27 +1,36 @@
 package id.derysudrajat.easyadapter
 
-import android.view.View
+import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 
-abstract class EasyAdapter<T, Binding : ViewBinding>(
-    private val data: MutableList<T>,
-) : RecyclerView.Adapter<EasyAdapter.ViewHolder>(), EasyListener<T, Binding> {
-
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
-
-    private lateinit var binding: Binding
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        binding = create(parent)
-        return ViewHolder(binding.root)
+class EasyAdapter<T, Binding : ViewBinding>(
+    data: List<T>,
+    bindingInflater: (LayoutInflater, ViewGroup, Boolean) -> Binding,
+    val onBindView: (binding: Binding, data: T) -> Unit
+) : BaseEasyAdapter<T, Binding>(data.toMutableList(), bindingInflater) {
+    override fun onBind(binding: Binding, data: T, position: Int) {
+        onBindView(binding, data)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        onBind(binding, data[position])
+    companion object {
+        fun <T, Binding : ViewBinding> init(bindingInflater: (LayoutInflater, ViewGroup, Boolean) -> Binding) =
+            EasyAdapter<T, Binding>(listOf(), bindingInflater) { _, _ -> }
+    }
+}
+
+class EasyAdapterIndexed<T, Binding : ViewBinding>(
+    data: List<T>,
+    bindingInflater: (LayoutInflater, ViewGroup, Boolean) -> Binding,
+    val onBindView: (binding: Binding, data: T, index: Int) -> Unit
+) : BaseEasyAdapter<T, Binding>(data.toMutableList(), bindingInflater) {
+
+    override fun onBind(binding: Binding, data: T, position: Int) {
+        onBindView(binding, data, position)
     }
 
-    override fun getItemCount(): Int = data.size
-
+    companion object {
+        fun <T, Binding : ViewBinding> init(bindingInflater: (LayoutInflater, ViewGroup, Boolean) -> Binding) =
+            EasyAdapterIndexed<T, Binding>(listOf(), bindingInflater) { _, _, _ -> }
+    }
 }
