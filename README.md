@@ -18,7 +18,21 @@ Library to make your coding easy when create adapter
     <td>✅</td>
   </tr>
   <tr>
-    <td>Create Adapter With or Without Class</td>
+    <td>Compose Like Adapter</td>
+    <td>✅</td>
+  </tr>
+    <tr>
+    <td>Indexed Adapter</td>
+    <td>✅</td>
+  </tr>
+  </tr>
+    <tr>
+    <td>Multi Easy Adapter</td>
+    <td>✅</td>
+  </tr>
+  </tr>
+    <tr>
+    <td>Give Initial to Adapter</td>
     <td>✅</td>
   </tr>
   <tr>
@@ -44,90 +58,87 @@ allprojects {
 
 ```gradle
 dependencies {
-    implementation 'com.github.derysudrajat:EasyAdapter:1.0.0'
+    implementation 'com.github.derysudrajat:EasyAdapter:2.0.0'
 }
 ```
 
 ## How To Use
 
-### 1. Make your adapter class extend to `EasyAdapter` class
-
-in `EasyAdapter` class you need to define:
-
-* `YourAdapterClass` = is your adapter class
-* `YourDataClass` = is your item data class
-* `YourLayoutBindingClass` = is your layout binding class
-
+### 1. The new way to use EasyAdapter ⚡️
+you just need to put your `listOfData` into `EasyAdapter` object along with your `ItemLayoutBinding` that call `::inflate` function 😎
 
 ```kotlin
-class YourAdapterClass(
-    listOfData: List<YourDataClass>
-) : EasyAdapter<YourDataClass, YourLayoutBindingClass>(listOfData)
+binding.rvMain.adapter = EasyAdapter(listOfData, ItemDataBinding::inflate) { binding, data ->
+    binding.tvName.text = data.name
+    binding.tvId.text = data.id
+    // ... other awesome code
+}
 ```
-
-### 2. Implement all method with your business logic
+### 2. EasyAdapter with Indexed 🥳
+yes finally you can use `EasyAdapterIndexed` if you want an index of the data when it `onBind` 😎
 
 ```kotlin
-class DataAdapter(
-    listOfData: MutableList<Data>
-) : EasyAdapter<Data, ItemDataBinding>(listOfData) {
-    
-    // Infate your LayoutBinding class
-    
-    override fun create(parent: ViewGroup): ItemDataBinding {
-        return ItemDataBinding.inflate(
-            LayoutInflater.from(parent.context), parent, false
-        )
-    }
+binding.rvMain.adapter = EasyAdapterIndexed(listOfData, ItemDataBinding::inflate) { binding, data, index ->
+    // .. your awesome code here
+}
+```
+### 3. Multi EasyAdapter
+Here we go to provide multiple views on `EasyAdapter` now you can do it with `MultipleEasyAdapter ` 🔥
 
-    // Implement your business logic here
-    
-    override fun onBind(binding: ItemDataBinding, data: Data) {
-        binding.apply {
-            tvName.text = data.name
-            tvId.text = data.id
+- you can use `item` for single data like `separator` or `title`
+- or you can use `items` for multiple data like the usual `EasyAdapter`
+
+```kotlin
+multipleAdapter = MultipleEasyAdapter {
+    item("List with Items", ItemTextBinding::inflate) { binding, data ->
+        binding.root.text = data
+    }
+    items(listOne, ItemDataBinding::inflate) { binding, data ->
+        binding.tvName.text = data.name
+        binding.tvId.text = data.id
+    }
+    item("List with ItemsIndexed", ItemTextBinding::inflate) { binding, data ->
+        binding.root.text = data
+    }
+    itemsIndexed(listTwo, ItemDataBinding::inflate) { binding, data, index ->
+        binding.tvName.text = buildString {
+            append("This item number-${index + 1}: ${data.name}")
         }
+        binding.tvId.text = data.id
     }
 }
 ```
-### 3. Another way to Implement EasyAdapter
 
-If you want to create adapter without class, yes we can, here we go 🔥
+### 4. Using Existing EasyAdapter in MultipleEasyAdapter
+if you wondering to using the existing `EasyAdapter` into`MultipleEasyAdapter` it's possible? yes absolutely possible 😎
+- you can use `addAdapter(yourEasyDapter)` into `MultipleEasyAdapter`
 
 ```kotlin
-val dataAdapter = object : EasyAdapter<Data, ItemDataBinding>(Dummy.example){
-    override fun create(parent: ViewGroup): ItemDataBinding {
-        return ItemDataBinding.inflate(
-            LayoutInflater.from(parent.context), parent, false
-        )
+multipleAdapter = MultipleEasyAdapter {
+    item("List with addAdapter", ItemTextBinding::inflate) { binding, data ->
+        binding.root.text = data
     }
-
-    override fun onBind(binding: ItemDataBinding, data: Data) {
-        with(binding){
-            tvName.text = data.name
-            tvId.text = data.id
-        }
+    addAdapter(adapter)
+    item("List with addAdapter Indexed", ItemTextBinding::inflate) { binding, data ->
+        binding.root.text = data
     }
+    addAdapter(adapterIndexed)
 }
 ```
-### 4. Set adapter to RecycleView
 
-Adapter with class
+### 5. You can initial your EasyAdapter
+yes if you using multiple adapter and want to using different data you can initial your adapter first just like this ✨
 
 ```kotlin
-rvMain.apply {
-    setHasFixedSize(true)
-    itemAnimator = DefaultItemAnimator()
-    adapter = DataAdapter(Dummy.example) // just call adapter like hot 🔥
-}
+private var adapter = EasyAdapter.init<Data, ItemDataBinding>(ItemDataBinding::inflate)
+private var adapterIndexed = EasyAdapterIndexed.init<Data, ItemDataBinding>(ItemDataBinding::inflate)
 ```
 
-Adapter without calss
+### 6. Attach your MultipleEasyAdapter
+finally you can attach the`MultipleEasyAdapter` using `.assemble()` like this, ya you know it means you assemble all the adapter 😎
 
 ```kotlin
-rvMain.apply {
-    setHasFixedSize(true)
-    itemAnimator = DefaultItemAnimator()
-    adapter = dataAdapter // just call adapter variable like hot 🔥
-}
+binding.rvMain.adapter = multipleAdapter.assemble()
 ```
+
+Enjoy the library, give me star ⭐️ if you like this library, ciaao 😎✨
